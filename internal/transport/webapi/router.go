@@ -2,6 +2,7 @@ package webapi
 
 import (
 	"context"
+	_ "embed"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -12,6 +13,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	slogecho "github.com/samber/slog-echo"
+	"github.com/swaggest/swgui"
+	"github.com/swaggest/swgui/v5emb"
+	"github.com/vitaliy-ukiru/bank-service/api"
 	"github.com/vitaliy-ukiru/bank-service/internal/config"
 	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/controllers"
 	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/middlewares"
@@ -69,7 +73,21 @@ func New(
 ) *ApiRouter {
 	e := echo.New()
 	configureEcho(e, logger)
+
 	controller.Bind(e)
+
+	e.Any("/docs*", echo.WrapHandler(
+		v5emb.NewHandlerWithConfig(swgui.Config{
+			Title:       "Bank Service",
+			SwaggerJSON: "/openapi.json",
+			BasePath:    "/docs",
+			JsonEditor:  true,
+		}),
+	))
+
+	e.GET("/openapi.json", func(c echo.Context) error {
+		return c.JSONBlob(200, api.OpenAPISpec)
+	})
 
 	return &ApiRouter{
 		e:                 e,

@@ -20,11 +20,11 @@ paths:
                   ok:
                     type: boolean
                     default: true
-                    required: true
-
-                  account_id:
-                    type: integer
-                    required: true
+                  result:
+                    type: object
+                    properties:
+                      account_id:
+                        type: integer
         500:
           description: "Unknown server error"
           content:
@@ -38,6 +38,7 @@ paths:
       parameters:
         - in: path
           name: id
+          required: true
           schema:
             type: integer
       requestBody:
@@ -80,6 +81,7 @@ paths:
       parameters:
         - in: path
           name: id
+          required: true
           schema:
             type: integer
       requestBody:
@@ -126,7 +128,60 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  
+  /accounts/{id}/balance:
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
 
+      description: "Get balance"
+      responses:
+        200:
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: true
+                  result:
+                    type: object
+                    properties:
+                      balance:
+                        type: number
+        400:
+          description: "Passed a negative or zero"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        404:
+          description: "Account not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        409:
+          description: "Not enough money on balance"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        500:
+          description: "Unknown server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
 
 components:
@@ -137,10 +192,8 @@ components:
         ok:
           type: boolean
           default: false
-          required: true
         error:
           type: string
-          required: true
 
     OkStatus:
       type: object
@@ -153,7 +206,6 @@ components:
       properties:
         amount:
           type: number
-          required: true
           minimum: 1
 
 
