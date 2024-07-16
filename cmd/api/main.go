@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -21,7 +23,7 @@ func main() {
 	envPath := flag.String("env-path", "", "Path to .env file")
 	flag.Parse()
 
-	err := config.LoadConfig(envPath)
+	err := config.LoadConfig(*envPath)
 	if err != nil {
 		panic(err)
 	}
@@ -60,7 +62,7 @@ func main() {
 	apiServer := webapi.New(cfg, accountController, log)
 
 	go func() {
-		if err := apiServer.Start(); err != nil {
+		if err := apiServer.Start(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Error("StartServer", "fail run server", err)
 			os.Exit(1)
 		}

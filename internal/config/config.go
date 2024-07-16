@@ -36,9 +36,9 @@ type Config struct {
 var cfg Config
 var cfgLoaded bool
 
-func LoadConfig(envFile *string) error {
-	if envFile != nil {
-		if err := godotenv.Load(*envFile); err != nil && os.IsNotExist(err) {
+func LoadConfig(envFile string) error {
+	if envFile != "" {
+		if err := godotenv.Load(envFile); err != nil && os.IsNotExist(err) {
 			return err
 		}
 	}
