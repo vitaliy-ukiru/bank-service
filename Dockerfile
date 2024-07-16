@@ -30,7 +30,7 @@ WORKDIR /app
 COPY --from=build-stage app/bin/web-server ./bin/web-server
 COPY --from=build-stage app/bin/migrator ./bin/migrator
 
-RUN addgroup --system app && adduser --system --group app
+RUN addgroup --system app && adduser --system -G app
 RUN chmod +x scripts/* && chmod +x ./bin/*
 
 USER app
