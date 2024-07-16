@@ -8,7 +8,7 @@ type OkResponse bool
 
 func (o OkResponse) MarshalJSON() ([]byte, error) {
 	var data struct {
-		Ok bool
+		Ok bool `json:"ok"`
 	}
 
 	data.Ok = bool(o)
@@ -18,13 +18,13 @@ func (o OkResponse) MarshalJSON() ([]byte, error) {
 const OkStatus = OkResponse(true)
 
 type Response struct {
-	Ok     bool
-	Result any
+	Ok     bool `json:"ok"`
+	Result any  `json:"result"`
 }
 
 type ErrorResponse struct {
-	Ok    bool
-	Error string
+	Ok    bool   `json:"ok"`
+	Error string `json:"error"`
 }
 
 func Ok(result any) Response {
