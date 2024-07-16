@@ -3,6 +3,7 @@ package logging
 import (
 	"context"
 	"io"
+	stdLog "log"
 	"log/slog"
 )
 
@@ -42,14 +43,20 @@ type Logger struct {
 	log *slog.Logger
 }
 
-func New(w io.Writer) Logger {
+func New(w io.Writer, isDebug bool) Logger {
+	level := slog.LevelInfo
+	if isDebug {
+		level = slog.LevelDebug
+	}
+
 	log := slog.New(slog.NewJSONHandler(
 		w,
-		nil,
+		&slog.HandlerOptions{
+			Level: level,
+		},
 	))
 	slog.SetDefault(log)
 	return Logger{log: log}
-
 }
 
 func (l Logger) Info(op string, msg string, args ...Attr) {
@@ -96,4 +103,10 @@ func prepareAttrs(attrs []Attr, preparedAttrs ...slog.Attr) []slog.Attr {
 		res = append(res, attr.attr)
 	}
 	return res
+}
+
+func ConfigureLogLogger(l Logger, level slog.Level) *stdLog.Logger {
+	stdLogWrapper := slog.NewLogLogger(l.log.Handler(), level)
+	stdLog.SetOutput(stdLogWrapper.Writer())
+	return stdLogWrapper
 }
