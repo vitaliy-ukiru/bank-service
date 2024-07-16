@@ -20,9 +20,17 @@ type WebServerConfig struct {
 	Port int    `env:"APP_PORT"`
 }
 
+type Env string
+
+const (
+	EnvDev  Env = "dev"
+	EnvProd Env = "prod"
+)
+
 type Config struct {
 	Database DatabaseConfig
 	Server   WebServerConfig
+	Env      Env `env:"APP_ENV" env-default:"dev"`
 }
 
 var cfg Config
