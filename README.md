@@ -26,4 +26,6 @@ go run ./cmd/migrator
 
 
 ## Endpoints
-Open path "/docs" for try SwaggerUI
+SwaggerUI available at /docs endpoint.
+
+
