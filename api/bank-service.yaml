@@ -1,0 +1,161 @@
+openapi: 3.0.3
+info:
+  title: Bank Service
+  description: Bank Service
+  version: 1.0.0
+servers:
+  - url: 'http://localhost'
+paths:
+  /accounts:
+    post:
+      description: "Create account"
+      responses:
+        201:
+          description: "Account created"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    default: true
+                    required: true
+
+                  account_id:
+                    type: integer
+                    required: true
+        500:
+          description: "Unknown server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /accounts/{id}/deposit:
+    post:
+      description: "Add money to balance"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AmountBody"
+      responses:
+        200:
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkStatus"
+
+        400:
+          description: "Passed a negative or zero"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        404:
+          description: "Account not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        500:
+          description: "Unknown server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /accounts/{id}/withdraw:
+    post:
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AmountBody"
+
+
+      description: "Take money from balance"
+      responses:
+        200:
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkStatus"
+
+        400:
+          description: "Passed a negative or zero"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        404:
+          description: "Account not found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        409:
+          description: "Not enough money on balance"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        500:
+          description: "Unknown server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          default: false
+          required: true
+        error:
+          type: string
+          required: true
+
+    OkStatus:
+      type: object
+      properties:
+        ok:
+          type: boolean
+
+    AmountBody:
+      type: object
+      properties:
+        amount:
+          type: number
+          required: true
+          minimum: 1
+
+
+
+  
