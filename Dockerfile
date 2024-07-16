@@ -21,13 +21,16 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/web-server github.com/vitaliy-uki
 
 
 # Deploy the application binary into a lean image
-FROM scratch
+FROM bash
 RUN addgroup --system app && adduser --system --group app
 
 WORKDIR /app
 
+
 COPY --from=build-stage app/bin/web-server ./bin/web-server
 COPY --from=build-stage app/bin/migrator ./bin/migrator
+
+RUN addgroup --system app && adduser --system --group app
 RUN chmod +x scripts/* && chmod +x ./bin/*
 
 USER app
