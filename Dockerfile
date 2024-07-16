@@ -22,7 +22,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o ./bin/web-server github.com/vitaliy-uki
 
 # Deploy the application binary into a lean image
 FROM bash
-RUN addgroup --system app && adduser --system -G app
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 WORKDIR /app
 
@@ -32,7 +32,7 @@ COPY --from=build-stage app/bin/migrator ./bin/migrator
 
 RUN chmod +x scripts/* && chmod +x ./bin/*
 
-USER app
+USER appuser
 
 ENTRYPOINT ["./scripts/docker-entrypoint.sh"]
 
