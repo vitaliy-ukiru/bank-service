@@ -9,10 +9,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	slogecho "github.com/samber/slog-echo"
-	"github.com/vitaliy-ukiru/test-bank/internal/config"
-	"github.com/vitaliy-ukiru/test-bank/internal/transport/webapi/controllers"
-	"github.com/vitaliy-ukiru/test-bank/internal/transport/webapi/middlewares"
-	"github.com/vitaliy-ukiru/test-bank/pkg/logging"
+	"github.com/vitaliy-ukiru/bank-service/internal/config"
+	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/controllers"
+	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/middlewares"
+	"github.com/vitaliy-ukiru/bank-service/pkg/logging"
 )
 
 type ApiRouter struct {

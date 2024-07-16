@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/vitaliy-ukiru/test-bank/internal/application"
-	"github.com/vitaliy-ukiru/test-bank/internal/domain/account"
+	"github.com/vitaliy-ukiru/bank-service/internal/application"
+	"github.com/vitaliy-ukiru/bank-service/internal/domain/account"
 )
 
 type AccountStorage interface {

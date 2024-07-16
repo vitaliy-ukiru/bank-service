@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/vitaliy-ukiru/test-bank/pkg/logging"
+	"github.com/vitaliy-ukiru/bank-service/pkg/logging"
 )
 
 type BankAccount interface {

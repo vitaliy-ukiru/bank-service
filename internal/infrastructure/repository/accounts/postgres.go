@@ -7,8 +7,8 @@ import (
 
 	"github.com/jackc/pgtype/pgxtype"
 	"github.com/jackc/pgx/v4"
-	"github.com/vitaliy-ukiru/test-bank/internal/application"
-	"github.com/vitaliy-ukiru/test-bank/internal/domain/account"
+	"github.com/vitaliy-ukiru/bank-service/internal/application"
+	"github.com/vitaliy-ukiru/bank-service/internal/domain/account"
 )
 
 type Connection interface {

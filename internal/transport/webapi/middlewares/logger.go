@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/vitaliy-ukiru/test-bank/pkg/logging"
+	"github.com/vitaliy-ukiru/bank-service/pkg/logging"
 )
 
 func WrapRequestContextWithLogger(log logging.Logger) echo.MiddlewareFunc {

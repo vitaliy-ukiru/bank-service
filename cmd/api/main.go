@@ -10,13 +10,13 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/vitaliy-ukiru/test-bank/internal/application"
-	"github.com/vitaliy-ukiru/test-bank/internal/config"
-	"github.com/vitaliy-ukiru/test-bank/internal/infrastructure/repository/accounts"
-	"github.com/vitaliy-ukiru/test-bank/internal/transport/webapi"
-	"github.com/vitaliy-ukiru/test-bank/internal/transport/webapi/controllers"
-	"github.com/vitaliy-ukiru/test-bank/pkg/client/pg"
-	"github.com/vitaliy-ukiru/test-bank/pkg/logging"
+	"github.com/vitaliy-ukiru/bank-service/internal/application"
+	"github.com/vitaliy-ukiru/bank-service/internal/config"
+	"github.com/vitaliy-ukiru/bank-service/internal/infrastructure/repository/accounts"
+	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi"
+	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/controllers"
+	"github.com/vitaliy-ukiru/bank-service/pkg/client/pg"
+	"github.com/vitaliy-ukiru/bank-service/pkg/logging"
 )
 
 func main() {

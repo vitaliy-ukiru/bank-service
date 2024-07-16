@@ -7,10 +7,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/vitaliy-ukiru/test-bank/internal/application"
-	"github.com/vitaliy-ukiru/test-bank/internal/domain/account"
-	"github.com/vitaliy-ukiru/test-bank/internal/transport/webapi/request"
-	"github.com/vitaliy-ukiru/test-bank/internal/transport/webapi/response"
+	"github.com/vitaliy-ukiru/bank-service/internal/application"
+	"github.com/vitaliy-ukiru/bank-service/internal/domain/account"
+	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/request"
+	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/response"
 )
 
 type Usecase interface {

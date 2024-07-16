@@ -8,8 +8,8 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/pgx"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/vitaliy-ukiru/test-bank/internal/config"
-	"github.com/vitaliy-ukiru/test-bank/pkg/client/pg"
+	"github.com/vitaliy-ukiru/bank-service/internal/config"
+	"github.com/vitaliy-ukiru/bank-service/pkg/client/pg"
 )
 
 func main() {

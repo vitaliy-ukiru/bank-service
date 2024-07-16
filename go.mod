@@ -1,4 +1,4 @@
-module github.com/vitaliy-ukiru/test-bank
+module github.com/vitaliy-ukiru/bank-service
 
 go 1.21
 
