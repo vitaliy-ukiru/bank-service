@@ -16,7 +16,7 @@ func main() {
 	envPath := flag.String("env-path", "", "Path to .env file")
 	flag.Parse()
 
-	err := config.LoadConfig(envPath)
+	err := config.LoadConfig(*envPath)
 	if err != nil {
 		panic(err)
 	}
