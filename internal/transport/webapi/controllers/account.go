@@ -119,7 +119,7 @@ func getContext(c echo.Context) context.Context {
 }
 
 func processError(c echo.Context, err error) error {
-	resp := response.Error(err)
+	resp := response.Error(errors.Unwrap(err))
 	if errors.Is(err, application.ErrAccountNotFound) {
 		return c.JSON(http.StatusNotFound, resp)
 	}
