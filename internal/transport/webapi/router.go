@@ -23,8 +23,9 @@ type ApiRouter struct {
 
 func configureEcho(e *echo.Echo, cfg config.Config, logger logging.Logger) {
 	e.HideBanner = true
-	stdLog := logging.ConfigureLogLogger(logger, slog.LevelError)
+	stdLog := logging.ConfigureLogLogger(logger, slog.LevelInfo)
 	e.Logger.SetLevel(99)
+	e.Logger.SetOutput(stdLog.Writer())
 	e.Server.ErrorLog = stdLog
 
 	level := slog.LevelError
