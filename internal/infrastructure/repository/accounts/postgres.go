@@ -46,7 +46,7 @@ func (r *Repository) GetAccountById(ctx context.Context, id int64) (account.Acco
 		accountId int64
 		balance   float64
 	)
-	if err := row.Scan(&accountId, balance); err != nil {
+	if err := row.Scan(&accountId, &balance); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return account.Account{}, fmt.Errorf("%s:%w", op, application.ErrAccountNotFound)
 		}
