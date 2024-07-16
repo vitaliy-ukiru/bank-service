@@ -29,8 +29,9 @@ WORKDIR /app
 
 COPY --from=build-stage app/bin/web-server ./bin/web-server
 COPY --from=build-stage app/bin/migrator ./bin/migrator
-
-RUN chmod +x scripts/* && chmod +x ./bin/*
+COPY --from=build-stage app/scripts/ ./scripts
+COPY --from=build-stage app/migrations ./migrations
+RUN chmod +x ./scripts/* && chmod +x ./bin/*
 
 USER appuser
 
