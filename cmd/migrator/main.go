@@ -39,5 +39,5 @@ func main() {
 		log.Fatal(err)
 	}
 	version, _, _ := m.Version()
-	fmt.Println("migrated to %d", version)
+	fmt.Printf("migrated to %d", version)
 }
