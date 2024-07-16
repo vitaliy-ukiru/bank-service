@@ -31,9 +31,9 @@ func NewAccountController(uc Usecase) *AccountController {
 func (a AccountController) Bind(e *echo.Echo) {
 	g := e.Group("/accounts")
 	g.POST("", a.CreateAccount)
-	g.POST("{id}/deposit", a.Deposit)
-	g.POST("{id}/withdraw", a.Withdraw)
-	g.GET("{id}/balance", a.GetAccountBalance)
+	g.POST("/:id/deposit", a.Deposit)
+	g.POST("/:id/withdraw", a.Withdraw)
+	g.GET("/:id/balance", a.GetAccountBalance)
 }
 
 const unknownError = "unknown error occurred"
