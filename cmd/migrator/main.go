@@ -16,9 +16,11 @@ func main() {
 	envPath := flag.String("env-path", "", "Path to .env file")
 	flag.Parse()
 
+	fmt.Printf("start migrator .env=%q", *envPath)
+
 	err := config.LoadConfig(*envPath)
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("load config: %w", err))
 	}
 
 	cfg := config.Get()
@@ -33,10 +35,10 @@ func main() {
 		),
 	)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("migrate.New: %v", err)
 	}
 	if err := m.Up(); err != nil {
-		log.Fatal(err)
+		log.Fatalf("migrate.Up: %v", err)
 	}
 	version, _, _ := m.Version()
 	fmt.Printf("migrated to %d", version)

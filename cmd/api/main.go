@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"flag"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -25,7 +26,7 @@ func main() {
 
 	err := config.LoadConfig(*envPath)
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("fail load config:%w", err))
 	}
 
 	cfg := config.Get()
