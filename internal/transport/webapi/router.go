@@ -2,8 +2,11 @@ package webapi
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"log/slog"
 	"net"
+	"net/http"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -12,6 +15,7 @@ import (
 	"github.com/vitaliy-ukiru/bank-service/internal/config"
 	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/controllers"
 	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/middlewares"
+	"github.com/vitaliy-ukiru/bank-service/internal/transport/webapi/response"
 	"github.com/vitaliy-ukiru/bank-service/pkg/logging"
 )
 
@@ -21,28 +25,41 @@ type ApiRouter struct {
 	accountController *controllers.AccountController
 }
 
-func configureEcho(e *echo.Echo, cfg config.Config, logger logging.Logger) {
+func configureEcho(e *echo.Echo, logger logging.Logger) {
 	e.HideBanner = true
 	stdLog := logging.ConfigureLogLogger(logger, slog.LevelInfo)
 	e.Logger.SetLevel(99)
 	e.Logger.SetOutput(stdLog.Writer())
 	e.Server.ErrorLog = stdLog
 
-	level := slog.LevelError
-	if cfg.Env == config.EnvDev {
-		level = slog.LevelDebug
-	}
-
 	e.Use(slogecho.NewWithConfig(logger.ToStd(), slogecho.Config{
-		DefaultLevel:    level,
-		WithRequestBody: true,
+		DefaultLevel:     slog.LevelDebug,
+		ClientErrorLevel: slog.LevelDebug,
+		ServerErrorLevel: slog.LevelWarn,
+		WithRequestBody:  true,
 	}))
 
 	e.Use(middleware.Recover())
 	e.Use(middleware.RemoveTrailingSlash())
 	e.Use(middleware.RequestID())
 	e.Use(middlewares.WrapRequestContextWithLogger(logger))
+	e.HTTPErrorHandler = func(err error, c echo.Context) {
+		var httpErr *echo.HTTPError
+		if errors.As(err, &httpErr) {
+			_ = c.JSON(httpErr.Code, response.Fail(fmt.Sprint(httpErr.Message)))
+			return
+		}
+		_ = c.JSON(http.StatusInternalServerError, response.Error(err))
+	}
 
+	echo.MethodNotAllowedHandler = plainErrorHandler(http.StatusMethodNotAllowed)
+	echo.NotFoundHandler = plainErrorHandler(http.StatusNotFound)
+}
+
+func plainErrorHandler(code int) func(c echo.Context) error {
+	return func(c echo.Context) error {
+		return c.JSON(code, response.Fail(http.StatusText(code)))
+	}
 }
 
 func New(
@@ -51,7 +68,7 @@ func New(
 	logger logging.Logger,
 ) *ApiRouter {
 	e := echo.New()
-	configureEcho(e, cfg, logger)
+	configureEcho(e, logger)
 	controller.Bind(e)
 
 	return &ApiRouter{
